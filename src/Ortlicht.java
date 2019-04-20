@@ -92,7 +92,7 @@ public class Ortlicht extends PApplet {
         //videoPlayer = new VideoPlayer("videos/scene_", ledColors.length);
         nnListener = new NNListener(ledColors.length);
         nnListener.start();
-        //trainingsVideoRecorder = new TrainingsVideoRecorder("../python/");
+        trainingsVideoRecorder = new TrainingsVideoRecorder(dataPath(""));
 
         //get Infos about sculpture
         boundingBox = LedBoundingBox.getForPositions(ledPositions);
