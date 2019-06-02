@@ -28,8 +28,10 @@ public class AttractingBalls implements runnableLedEffect {
 	RemoteControlledIntParameter generations, population, DNALength;
 	int numGeneration, numPopulation, lengthDNA;
 	float genForce;
-	LedColor leaderCol = new LedColor((50f / 255f), (170f / 255f), 1f);
-	LedColor followCol = new LedColor(1f, (110f / 255f), (40f / 255f));
+	LedColor leaderCol = new LedColor(0.01f, 1f, 0.01f);
+	LedColor followCol = new LedColor(1f, 0.01f, 0.01f);        
+	//LedColor leaderCol = new LedColor((50f / 255f), (170f / 255f), 1f);
+	//LedColor followCol = new LedColor(1f, (110f / 255f), (40f / 255f));
 	LedColor DNACol = new LedColor(255f/255, (255f / 255f), (255f / 255f));
 	PApplet papplet;
 
@@ -94,9 +96,9 @@ public class AttractingBalls implements runnableLedEffect {
 		b[1].collisionWall(wallFriction);
 		b[0].collisionBalls(b[1], leaderCol, followCol);
 		
-		b[0].sendPosition();
-		b[1].sendPosition();
-		b[0].sendDistance(b[1]);
+		//b[0].sendPosition();
+		//b[1].sendPosition();
+		//b[0].sendDistance(b[1]);
 
 		LedColor[] ballBufferLedColors = b[0].drawMe();
 		LedColor[] ball2BufferLedColors = b[1].drawMe();

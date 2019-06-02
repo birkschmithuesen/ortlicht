@@ -10,14 +10,20 @@ class Mixer {
     // Array of effects for the mixer and their mixer specific values
     ArrayList<runnableLedEffect> effectList;
     ArrayList<RemoteControlledFloatParameter> opacityList;
-    RemoteControlledFloatParameter traceControl;
-    float trace;
+    RemoteControlledFloatParameter traceControlRed;
+    RemoteControlledFloatParameter traceControlGreen;
+    RemoteControlledFloatParameter traceControlBlue;
+    //float trace;
+    LedColor trace;
 
     public Mixer() {
         outputBufferLedColors = LedColor.createColorArray(Ortlicht.ledPositions.length); //creates a new ledColorBuffer as output of the mixer
         effectList = new ArrayList<runnableLedEffect>();
         opacityList = new ArrayList<RemoteControlledFloatParameter>();
-        traceControl = new RemoteControlledFloatParameter("/mixer/trace", 0.23f, 0f, 1f);
+        traceControlRed = new RemoteControlledFloatParameter("/mixer/trace/red", 0.23f, 0f, 1f);
+        traceControlGreen = new RemoteControlledFloatParameter("/mixer/trace/green", 0.23f, 0f, 1f);
+        traceControlBlue = new RemoteControlledFloatParameter("/mixer/trace/blue", 0.23f, 0f, 1f);
+        
     }
 
     //adds an effect to the effect ArrayList
@@ -29,7 +35,8 @@ class Mixer {
 
     public LedColor[] mix() {
         // LedColor.setAllBlack(outputBufferLedColors);
-        trace = traceControl.getValue();
+        trace = new LedColor(traceControlRed.getValue(), traceControlGreen.getValue(), traceControlBlue.getValue());
+        //LedColor.mult(outputBufferLedColors, trace);
         LedColor.mult(outputBufferLedColors, trace);
         for (int i = 0; i < effectList.size(); i++) {
             //copies the effects output with the remote opacity and blendmode on the mixerbuffer

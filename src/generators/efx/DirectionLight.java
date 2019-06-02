@@ -20,18 +20,18 @@ public class DirectionLight implements runnableLedEffect {
 	LedColor.LedAlphaMode blendMode = LedColor.LedAlphaMode.NORMAL;
 	float cyclePos;
 
-	DirectionLight(String _id, PVector[] _ledNormals, LedColor _color) {
+	DirectionLight(String _id, PVector[] _ledNormals) {
 		id = _id;
 		ledNormals = _ledNormals;
 		bufferLedColors = LedColor.createColorArray(ledNormals.length);
-		theColor = _color;
-		remoteColor = new RemoteControlledColorParameter("/Direction" + id, 0.5f, 0.5f, 0.5f);
-		remoteBlendOut = new RemoteControlledFloatParameter("/Direction" + id + "BlendOut", 1.f, 0.f, 1.f);
-		remoteDirectionX = new RemoteControlledFloatParameter("/Direction" + id + "XFrom", 0.2f, -0.5f, 0.5f);
-		remoteDirectionY = new RemoteControlledFloatParameter("/Direction" + id + "YFrom", 0.2f, -1f, 1f);
-		remoteDirectionZ = new RemoteControlledFloatParameter("/Direction" + id + "ZFrom", 0.2f, -0.5f, 0.5f);
-		remoteSize = new RemoteControlledFloatParameter("/Direction" + id + "Size", 0.2f, 0.f, 1.f);
-		remoteCyclePos = new RemoteControlledFloatParameter("/Direction" + id + "cyclePos", 0.0f, 0.f, 1.f);
+		//theColor = _color;
+		remoteColor = new RemoteControlledColorParameter("/Direction/" + id + "/color/", 0.5f, 0.5f, 0.5f);
+		remoteBlendOut = new RemoteControlledFloatParameter("/Direction/" + id + "/BlendOut", 1.f, 0.f, 1.f);
+		remoteDirectionX = new RemoteControlledFloatParameter("/Direction/" + id + "/XFrom", 0.2f, -0.5f, 0.5f);
+		remoteDirectionY = new RemoteControlledFloatParameter("/Direction/" + id + "/YFrom", 0.2f, 0f, 1f);
+		remoteDirectionZ = new RemoteControlledFloatParameter("/Direction/" + id + "/ZFrom", 0.2f, -0.5f, 0.5f);
+		remoteSize = new RemoteControlledFloatParameter("/Direction/" + id + "/Size", 0.2f, 0.f, 1.f);
+		remoteCyclePos = new RemoteControlledFloatParameter("/Direction/" + id + "/cyclePos", 0.0f, 0.f, 1.f);
 	}
 
 	public LedColor[] drawMe() {
@@ -48,7 +48,7 @@ public class DirectionLight implements runnableLedEffect {
 		//ledDirectionDrawer.drawDirection(ledNormals, bufferLedColors, new PVector(remoteDirectionX.getValue(),remoteDirectionY.getValue(),remoteDirectionZ.getValue()), remoteSize.getValue(),
 		//ledDirectionDrawer.drawDirection(ledNormals, bufferLedColors, new PVector(direction,remoteDirectionY.getValue(),remoteDirectionZ.getValue()), remoteSize.getValue(),
 		
-		LedDirectionDrawer.drawDirection(ledNormals, bufferLedColors, new PVector(directionX, remoteDirectionY.getValue(),directionZ), remoteSize.getValue(),
+		LedDirectionDrawer.drawDirection(ledNormals, bufferLedColors, new PVector(directionX, papplet.map(remoteDirectionY.getValue(), 0f, 1f, -1.6f, 0.6f),directionZ), remoteSize.getValue(),
 		
 		remoteColor.getColor(), blendMode, remoteBlendOut.getValue());
 		return bufferLedColors;

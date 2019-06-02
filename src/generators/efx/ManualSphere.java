@@ -3,7 +3,7 @@ import processing.core.PVector;
 
 public class ManualSphere implements runnableLedEffect {
 	PApplet papplet;
-	String name = "Sphere";
+	String name;
 	String id;
 	PVector[] ledPositions;
 	LedColor[] bufferLedColors;
@@ -21,6 +21,7 @@ public class ManualSphere implements runnableLedEffect {
 		ledPositions = _ledPositions;
 		bufferLedColors = LedColor.createColorArray(ledPositions.length);
 		thickness = _thickness;
+                name = "Sphere"+id;
 		
 		remoteColor = new RemoteControlledColorParameter("/Spheres/"+name+"_"+id+"/color/", 0f, 0.f, 1f);
 		remoteBlendOut = new RemoteControlledFloatParameter("/Spheres/"+name+"_"+id + "/blendOut", 1.f, 0.f, 1.f);

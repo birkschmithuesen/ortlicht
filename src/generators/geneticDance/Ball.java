@@ -265,7 +265,7 @@ public class Ball implements runnableLedEffect {
 		if (distToPartner(_b) < 0) {
 			OscMessage theMessage = new OscMessage("ball/collision");
 			theMessage.add(1f);// PApplet.map(vel.mag(), 0f, 0.5f, 0f, 1f));
-			Ortlicht.oscP5.send(theMessage, Ortlicht.soundGeneratorLocation);
+			//Ortlicht.oscP5.send(theMessage, Ortlicht.soundGeneratorLocation);
 
 			// exchange velocities between the balls
 			PVector counterBall = _b.vel.copy();
@@ -288,7 +288,7 @@ public class Ball implements runnableLedEffect {
 			//papplet.println("PHYSIC COLISSION WITH BALL");
 			theMessage = new OscMessage("ball/collision");
 			theMessage.add(0f);
-			Ortlicht.oscP5.send(theMessage, Ortlicht.soundGeneratorLocation);
+			//Ortlicht.oscP5.send(theMessage, Ortlicht.soundGeneratorLocation);
 
 			//connection = PVector.sub(pos, _b.pos); 
 			//connection.div(2); 
