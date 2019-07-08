@@ -28,6 +28,7 @@ public class TrainingsVideoRecorder {
     String filename_temp = "temp.vid";
     int counter=0;
     int nLeds=0;
+    int numBins =128;
 
     public TrainingsVideoRecorder(String filepath) {
         this.filepath = filepath;
@@ -85,7 +86,7 @@ public class TrainingsVideoRecorder {
             PrintWriter writer = new PrintWriter(file);
             while (dis.available() > 0) {
                 //write the fft data to the txt file
-                for (int i = 0; i < 30; i++) {
+                for (int i = 0; i < numBins; i++) {
                     writer.print(dis.readFloat()+"\t");
                 }
                 //write the led data to the txt file.The Data in the stream is RGB, we just take the R 
@@ -126,7 +127,7 @@ public class TrainingsVideoRecorder {
     private void writeFrameToStream(LedColor[] ledColors, OscMessage fftAnalyse) {
         byte[] theFrame = buildFrame(ledColors);
         try {
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < numBins; i++) {
                 if (fftAnalyse.getTypetagAsBytes()[i] == 'f') {
                     dos.writeFloat(fftAnalyse.get(i).floatValue());
                 }
