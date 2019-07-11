@@ -33,7 +33,7 @@ public class MovingWallEffect implements runnableLedEffect {
 		wallNormalY= new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/normal/Y",wallNormalY_,-1f,1f);
 		wallNormalZ= new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/normal/Z",wallNormalZ_,-1f,1f);
                 
-                wallColor = new RemoteControlledColorParameter("/walls/"+name+"_"+id+"/color/",0,0,0.5f);
+                wallColor = new RemoteControlledColorParameter("/walls/"+name+"_"+id+"/color/",0,0,1f);
 	}
 	public LedColor[] drawMe() {
 		

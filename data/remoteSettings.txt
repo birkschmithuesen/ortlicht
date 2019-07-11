@@ -14,7 +14,7 @@ float	/walls/wall_middle/normal/Y	space for descripiton	0.09	-1.0	1.0
 float	/walls/wall_middle/normal/Z	space for descripiton	-1.0	-1.0	1.0
 float	/walls/wall_middle/color/Hue	space for descripiton	0.0	0	1
 float	/walls/wall_middle/color/Saturation	space for descripiton	0.0	0	1
-float	/walls/wall_middle/color/Brightness	space for descripiton	0.5	0	1
+float	/walls/wall_middle/color/Brightness	space for descripiton	1.0	0	1
 float	/mixer/opacity/wallmiddle	space for descripiton	1.0	0.0	1.0
 float	/walls/wall_top/position	space for descripiton	1.0	0.0	1.0
 float	/walls/wall_top/width	space for descripiton	0.3	0.0	1.0
@@ -25,7 +25,7 @@ float	/walls/wall_top/normal/Y	space for descripiton	1.0	-1.0	1.0
 float	/walls/wall_top/normal/Z	space for descripiton	0.09	-1.0	1.0
 float	/walls/wall_top/color/Hue	space for descripiton	0.0	0	1
 float	/walls/wall_top/color/Saturation	space for descripiton	0.0	0	1
-float	/walls/wall_top/color/Brightness	space for descripiton	0.5	0	1
+float	/walls/wall_top/color/Brightness	space for descripiton	1.0	0	1
 float	/mixer/opacity/walltop	space for descripiton	1.0	0.0	1.0
 float	/walls/wall_bottom/position	space for descripiton	0.0	0.0	1.0
 float	/walls/wall_bottom/width	space for descripiton	0.3	0.0	1.0
@@ -36,7 +36,7 @@ float	/walls/wall_bottom/normal/Y	space for descripiton	1.0	-1.0	1.0
 float	/walls/wall_bottom/normal/Z	space for descripiton	0.09	-1.0	1.0
 float	/walls/wall_bottom/color/Hue	space for descripiton	0.0	0	1
 float	/walls/wall_bottom/color/Saturation	space for descripiton	0.0	0	1
-float	/walls/wall_bottom/color/Brightness	space for descripiton	0.5	0	1
+float	/walls/wall_bottom/color/Brightness	space for descripiton	1.0	0	1
 float	/mixer/opacity/wallbottom	space for descripiton	1.0	0.0	1.0
 float	/walls/wall_left/position	space for descripiton	0.0	0.0	1.0
 float	/walls/wall_left/width	space for descripiton	0.3	0.0	1.0
@@ -47,7 +47,7 @@ float	/walls/wall_left/normal/Y	space for descripiton	0.09	-1.0	1.0
 float	/walls/wall_left/normal/Z	space for descripiton	-1.0	-1.0	1.0
 float	/walls/wall_left/color/Hue	space for descripiton	0.0	0	1
 float	/walls/wall_left/color/Saturation	space for descripiton	0.0	0	1
-float	/walls/wall_left/color/Brightness	space for descripiton	0.5	0	1
+float	/walls/wall_left/color/Brightness	space for descripiton	1.0	0	1
 float	/mixer/opacity/wallleft	space for descripiton	1.0	0.0	1.0
 float	/walls/wall_right/position	space for descripiton	1.0	0.0	1.0
 float	/walls/wall_right/width	space for descripiton	0.3	0.0	1.0
@@ -58,7 +58,7 @@ float	/walls/wall_right/normal/Y	space for descripiton	0.09	-1.0	1.0
 float	/walls/wall_right/normal/Z	space for descripiton	-1.0	-1.0	1.0
 float	/walls/wall_right/color/Hue	space for descripiton	0.0	0	1
 float	/walls/wall_right/color/Saturation	space for descripiton	0.0	0	1
-float	/walls/wall_right/color/Brightness	space for descripiton	0.5	0	1
+float	/walls/wall_right/color/Brightness	space for descripiton	1.0	0	1
 float	/mixer/opacity/wallright	space for descripiton	1.0	0.0	1.0
 float	/Spheres/Sphere1_1/color/Hue	space for descripiton	0.0	0	1
 float	/Spheres/Sphere1_1/color/Saturation	space for descripiton	0.0	0	1

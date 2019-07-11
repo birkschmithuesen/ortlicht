@@ -19,6 +19,7 @@ public class NNListener extends Thread {
     int nLeds;
     DatagramSocket serverSocket;
     byte[] receiveData = new byte[1500];
+    int cyclesSinceLastFrame = 0;
 
     public NNListener(int nLeds) {
         try {
@@ -34,6 +35,9 @@ public class NNListener extends Thread {
 
     public void run() {
         int frame;
+        if(getFrameAvailable())cyclesSinceLastFrame=0;
+        else cyclesSinceLastFrame++;
+        if(cyclesSinceLastFrame>30)LedColor.setAllBlack(ledColors);
         while (true) {
             try {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -58,7 +62,7 @@ public class NNListener extends Thread {
     }
 
     //check if the transfer of the frame is finished
-    public boolean getFrameAvailble() {
+    public boolean getFrameAvailable() {
         if (oscFramePart > 8) {
             return true;
         } else {
