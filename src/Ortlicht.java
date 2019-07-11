@@ -163,13 +163,14 @@ public class Ortlicht extends PApplet {
         artNetSender.sendToLeds(ledColors); 
         */
         if (nnListener.getReceiving()) {
-        //    System.out.println("get NN");
+            System.out.println("get NN");
             ledColors = nnListener.getFrame();
             artNetSender.sendToLeds(ledColors);
             background(0);
             drawScreen();
             //else show the mixers efx-generators output
         } else {
+            //System.out.println(nnListener.getFrameAvailable());
             ledColors = mixer.mix();
             background(0);
             drawScreen();

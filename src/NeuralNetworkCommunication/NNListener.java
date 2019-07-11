@@ -20,6 +20,7 @@ public class NNListener extends Thread {
     DatagramSocket serverSocket;
     byte[] receiveData = new byte[1500];
     int cyclesSinceLastFrame = 0;
+    PApplet parent;
 
     public NNListener(int nLeds) {
         try {
@@ -38,6 +39,7 @@ public class NNListener extends Thread {
         if(getFrameAvailable())cyclesSinceLastFrame=0;
         else cyclesSinceLastFrame++;
         if(cyclesSinceLastFrame>30)LedColor.setAllBlack(ledColors);
+        System.out.println(cyclesSinceLastFrame);
         while (true) {
             try {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -69,8 +71,11 @@ public class NNListener extends Thread {
             return false;
         }
     }
-
-    //put the received leds in the LedColor Buffer
+    
+    public int getCyclesSinceLastFrame() {
+        return cyclesSinceLastFrame;
+    }
+//put the received leds in the LedColor Buffer
     public void receiveFramePart(byte[] udpPacket, int len) {
         //isPlaying = true;
         int startLed = udpPacket[4] * 1402;
