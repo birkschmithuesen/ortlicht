@@ -77,7 +77,7 @@ public class Ortlicht extends PApplet {
     }
 
     public void setup() {
-       // frameRate(50);
+        frameRate(44);
         delay(500);
         OscProperties op = new OscProperties();
         //  op.setDatagramSize(9220);
@@ -102,7 +102,7 @@ public class Ortlicht extends PApplet {
         //mixer.addEffect(new AttractingBalls());
         //mixer.addEffect(new MovingWallEffect(ledPositions, "vertical", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
         //mixer.addEffect(new MovingWallEffect(ledPositions, "horizontal", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
-        //mixer.addEffect(new SingleStripe("1", numStripes, numLedsPerStripe, ledPositions.length));
+        mixer.addEffect(new SingleStripe("1", numStripes, numLedsPerStripe, ledPositions.length));
         
         //mixer.addEffect(new ManualSphere("2", ledPositions, 0.1f));        
         //mixer.addEffect(new DirectionLight("1", ledNormals));

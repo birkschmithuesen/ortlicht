@@ -84,7 +84,7 @@ public class NNListener extends Thread {
             int numLed = i + startLed;
             if (numLed < nLeds) {
                 //float theValue=PApplet.map(theOscMessage.get(i).intValue(), 0, 256, 0, 1);
-                float thevalue = PApplet.map(udpPacket[i+6], 0, 255, 0f, 1f);
+                float thevalue = PApplet.map(udpPacket[i+6], -127, 127, 0f, 1f);
                 ledColors[i + startLed].x = thevalue;
                 ledColors[i + startLed].y = thevalue;
                 ledColors[i + startLed].z = thevalue;
