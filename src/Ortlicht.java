@@ -104,16 +104,26 @@ public class Ortlicht extends PApplet {
         //mixer.addEffect(new MovingWallEffect(ledPositions, "horizontal", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
         //mixer.addEffect(new SingleStripe("1", numStripes, numLedsPerStripe, ledPositions.length));
         
-        //mixer.addEffect(new ManualSphere("2", ledPositions, 0.1f));        
+        //mixer.addEffect(new ManualSphere("2", ledPositions, 0.1f));
+        
+        
+        // THE FOLLOWING ARE NEEDED FOR SAI # 2 
+   
         mixer.addEffect(new DirectionLight("1", ledNormals));
-       
-        // THE FOLLOWING ARE NEEDED FOR SAI # 1
-        //mixer.addEffect(new MovingWallEffect(ledPositions, "middle", 0.08f, 0.09f, -1f, 0.505f, 0f, 0f));
-        //mixer.addEffect(new MovingWallEffect(ledPositions, "top", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f)); //float pos_, float fadeOut_, float width_
-        mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.29f, 0.3f));
-        //mixer.addEffect(new MovingWallEffect(ledPositions, "left", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
-        //mixer.addEffect(new MovingWallEffect(ledPositions, "right", 0.08f, 0.09f, -1f,1f, 0.29f, 0.3f));
         mixer.addEffect(new ManualSphere("1", ledPositions, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.19f, 0.005f));
+ 
+        
+        // THE FOLLOWING ARE NEEDED FOR SAI # 1
+        /*
+        mixer.addEffect(new MovingWallEffect(ledPositions, "middle", 0.08f, 0.09f, -1f, 0.505f, 0f, 0f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "top", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f)); //float pos_, float fadeOut_, float width_
+        mixer.addEffect(new MovingWallEffect(ledPositions, "left", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "right", 0.08f, 0.09f, -1f,1f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.29f, 0.3f));
+        mixer.addEffect(new ManualSphere("1", ledPositions, 0.3f));
+        */
+        
         mixer.addEffect(new NNefx());
         
         //create a Recorder to record the trainingsdata

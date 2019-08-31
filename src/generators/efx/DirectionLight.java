@@ -28,7 +28,7 @@ public class DirectionLight implements runnableLedEffect {
 		remoteColor = new RemoteControlledColorParameter("/Direction/" + id + "/color/", 0.0f, 0.0f, 0.5f);
 		remoteBlendOut = new RemoteControlledFloatParameter("/Direction/" + id + "/BlendOut", 1.f, 0.f, 1.f);
 		remoteDirectionX = new RemoteControlledFloatParameter("/Direction/" + id + "/XFrom", 0.8f, -0.5f, 0.5f);
-		remoteDirectionY = new RemoteControlledFloatParameter("/Direction/" + id + "/YFrom", 0.58f, 0f, 1f);
+		remoteDirectionY = new RemoteControlledFloatParameter("/Direction/" + id + "/YFrom", 0.64f, 0f, 1f);
 		remoteDirectionZ = new RemoteControlledFloatParameter("/Direction/" + id + "/ZFrom", 0.2f, -0.5f, 0.5f);
 		remoteSize = new RemoteControlledFloatParameter("/Direction/" + id + "/Size", 0.2f, 0.f, 1.f);
 		remoteCyclePos = new RemoteControlledFloatParameter("/Direction/" + id + "/cyclePos", 0.0f, 0.f, 1.f);
