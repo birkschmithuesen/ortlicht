@@ -113,22 +113,6 @@ class ArtNetSender {
 															// bytes
 				int rgbPosition = i * 3;
 				mymessage[rgbPosition + 18] = (byte) (parent.constrain(_ledColors[i + offset].x * 255, 0, 255)); // Colors
-																													// are
-																													// saved
-																													// in
-																													// an
-																													// extended
-																													// PVector.
-																													// Here
-																													// is
-																													// the
-																													// place
-																													// to
-																													// constrain
-																													// to
-																													// values
-																													// from
-																													// 0-255
 				mymessage[rgbPosition + 19] = (byte) (parent.constrain(_ledColors[i + offset].y * 255, 0, 255));
 				mymessage[rgbPosition + 20] = (byte) (parent.constrain(_ledColors[i + offset].z * 255, 0, 255));
 			}

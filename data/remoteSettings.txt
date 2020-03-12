@@ -1,6 +1,6 @@
-float	/mixer/trace/red	space for descripiton	0.23	0.0	1.0
-float	/mixer/trace/green	space for descripiton	0.23	0.0	1.0
-float	/mixer/trace/blue	space for descripiton	0.23	0.0	1.0
+float	/mixer/trace/red	space for descripiton	0.27	0.0	1.0
+float	/mixer/trace/green	space for descripiton	0.27	0.0	1.0
+float	/mixer/trace/blue	space for descripiton	0.27	0.0	1.0
 float	/NN/leds	space for descripiton	0.0	0.0	1.0
 int	/NN/play	space for descripiton	0	0	1
 int	/Training/record	space for descripiton	0	0	1
