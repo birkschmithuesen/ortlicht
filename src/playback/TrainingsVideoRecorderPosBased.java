@@ -10,13 +10,14 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import oscP5.OscMessage;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 //this class records trainingsframes in a binary stream. At the end it will be converted and saved as delimited txt file
 /**
  *
  * @author birk
  */
-public class TrainingsVideoRecorder {
+public class TrainingsVideoRecorderPosBased {
 
     PApplet parent;
     FileOutputStream fos = null;
@@ -30,7 +31,7 @@ public class TrainingsVideoRecorder {
     int nLeds=0;
     int numBins =128;
 
-    public TrainingsVideoRecorder(String filepath) {
+    public TrainingsVideoRecorderPosBased(String filepath) {
         this.filepath = filepath;
         remoteRecorderStart = new RemoteControlledIntParameter("/Training/record", 0, 0, 1);
         inputFFT = new RemoteControlledFloatParameter("/fft", 0, 0, 256);
@@ -49,12 +50,13 @@ public class TrainingsVideoRecorder {
         }
     }
 
-    public void run(LedColor[] ledColors, OscMessage fft) {
+    public void run(LedBoundingBox boundingBox, PVector[] ledPositions, LedColor[] ledColors, OscMessage fft) {
         //save the frame, when new a new fft mesage arrived
         //System.out.println("receive fft"); 
         if (remoteRecorderStart.getValue() > 0) {
             nLeds=ledColors.length; //this should just be done one time!
-            writeFrameToStream(ledColors, fft);
+            // create new Array form: Brightness XYZ FFT
+            writeFrameToStream(boundingBox, ledPositions, ledColors, fft);
             System.out.println("recording datapoint"+counter); 
             counter++;
         } //when the record from Ableton is finished
@@ -85,20 +87,20 @@ public class TrainingsVideoRecorder {
             File file = new File(filepath + "traingsdata.txt");
             PrintWriter writer = new PrintWriter(file);
             while (dis.available() > 0) {
+                //write the brightness of one one LED to the txt file. The Data in the stream is RGB, we just take the R 
+                writer.print(dis.readFloat()+"\t");
+                //skip the G and B value from the stream
+                writer.print(dis.readFloat()+"\t");
+                writer.print(dis.readFloat()+"\t");
+                // write the XYZ position data of one LED to the text file.
+                for (int i = 0; i < 3; i++){ //read three floats for xyz
+                    writer.print(dis.readFloat()+"\t");
+                }
                 //write the fft data to the txt file
                 for (int i = 0; i < numBins; i++) {
                     writer.print(dis.readFloat()+"\t");
                 }
-                //write the led data to the txt file.The Data in the stream is RGB, we just take the R 
-                for (int i=0; i<nLeds;i++){
-                    ///float ledValue=(float)i; 
-                    float ledValue=parent.map((int)dis.readByte(),-127,127,0f,1f);
-                    writer.print(ledValue+"\t");
-                    //skip the G and B value from the stream
-                    dis.readByte();
-                    dis.readByte();
-                }
-                //frames are seperated in new lines
+                //leds are seperated in new lines
                 writer.println();
             }
             writer.close();
@@ -124,33 +126,54 @@ public class TrainingsVideoRecorder {
         }
     }
 
-    private void writeFrameToStream(LedColor[] ledColors, OscMessage fftAnalyse) {
-        byte[] theFrame = buildFrame(ledColors);
+    private void writeFrameToStream(LedBoundingBox boundingBox, PVector[] ledPositions, LedColor[] ledColors, OscMessage fftAnalyse) {
+        float[] theFrame = buildFrame(ledColors);
+        float[] thePositions = buildPositions(ledPositions);
         try {
-            for (int i = 0; i < numBins; i++) {
-                if (fftAnalyse.getTypetagAsBytes()[i] == 'f') {
-                    dos.writeFloat(fftAnalyse.get(i).floatValue());
+            for (int i = 0; i < ledColors.length; i++) {
+                for (int j = 0; j < 3; j++){
+                    dos.writeFloat(theFrame[i+j]); //RGB values
                 }
+                for (int j = 0; j < 3; j++){
+                    dos.writeFloat(thePositions[i+j]); //xyz LEDPositions 
+                }
+                for (int j = 0; j < numBins; j++) {
+                    if (fftAnalyse.getTypetagAsBytes()[j] == 'f') {
+                        dos.writeFloat(fftAnalyse.get(j).floatValue());
+                    }
+                }
+                for (float f : theFrame) {
+                    dos.writeFloat(f);
+                };
             }
-            for (byte b : theFrame) {
-                dos.writeByte(b);
-            };
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    //built the Position data with byte values
+    private float[] buildPositions(PVector[] ledPositions) {
+        float[] thePositions = new float[ledPositions.length * 3];
+        for (int i = 0; i < ledPositions.length; i++) {
+            int index = i * 3;
+            thePositions[index] = ledPositions[i].x;
+            thePositions[index + 1] = ledPositions[i].y;
+            thePositions[index + 2] = ledPositions[i].z;
+        }
+        return thePositions;
+    }
+
+    
     //built the Frame with byte values
-    private byte[] buildFrame(LedColor[] ledColors) {
-        byte[] theFrame = new byte[ledColors.length * 3];
+    private float[] buildFrame(LedColor[] ledColors) {
+        float[] theFrame = new float[ledColors.length * 3];
         for (int i = 0; i < ledColors.length; i++) {
-            int byteIndex = i * 3;
-            theFrame[byteIndex] = (byte) ((parent.constrain(ledColors[i].x * 255, 0, 255)) - 128);
-            theFrame[byteIndex + 1] = (byte) ((parent.constrain(ledColors[i].y * 255, 0, 255)) - 128);
-            theFrame[byteIndex + 2] = (byte) ((parent.constrain(ledColors[i].z * 255, 0, 255)) - 128);
+            int index = i * 3;
+            theFrame[index] = ledColors[i].x;
+            theFrame[index + 1] = ledColors[i].y;
+            theFrame[index + 2] = ledColors[i].z;
         }
         return theFrame;
     }
-
 }

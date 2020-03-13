@@ -36,7 +36,7 @@ public class Ortlicht extends PApplet {
     LedVisualizer visualizer = new LedVisualizer(this);
 
     // all data about our leds
-    public static PVector[] ledPositions;
+    public static PVector[] ledPositions, ledPositionsNormalized;
     public static PVector[] ledNormals;
     public static LedColor[] ledColors;
     LedInStripeInfo[] stripeInfos;
@@ -45,6 +45,7 @@ public class Ortlicht extends PApplet {
     VideoPlayer videoPlayer;
     public static NNListener nnListener;
     TrainingsVideoRecorder trainingsVideoRecorder;
+    TrainingsVideoRecorderPosBased trainingsVideoRecorderPosBased;
 
     // Information about the sculpture dimensions
     public static float sculptureRadius = 0.77f; // <<<<----------------------this must be calculated automatically
@@ -94,10 +95,14 @@ public class Ortlicht extends PApplet {
         nnListener = new NNListener(ledColors.length);
         nnListener.start();
         trainingsVideoRecorder = new TrainingsVideoRecorder(dataPath(""));
+        trainingsVideoRecorderPosBased = new TrainingsVideoRecorderPosBased(dataPath(""));
 
         //get Infos about sculpture
         boundingBox = LedBoundingBox.getForPositions(ledPositions);
-
+        
+        //normalize the LedPosition Data
+        ledPositionsNormalized = boundingBox.normalizeLedPositions(ledPositions);
+        
         //add effects to EffectArray
         //mixer.addEffect(new AttractingBalls());
         //mixer.addEffect(new MovingWallEffect(ledPositions, "vertical", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
@@ -249,7 +254,8 @@ public class Ortlicht extends PApplet {
             //videoRecorder.run(ledColors, theOscMessage.get(0).intValue());
         // a fft_train has to send in the end        to save trainings data    
         } else if (theOscMessage.checkAddrPattern("/fft_train") && theOscMessage.arguments().length > 0) {
-            trainingsVideoRecorder.run(ledColors, theOscMessage);
+            //trainingsVideoRecorder.run(ledColors, theOscMessage);
+            trainingsVideoRecorderPosBased.run(boundingBox, ledPositionsNormalized, ledColors, theOscMessage);
            
         } else {
             OscMessageDistributor.distributeMessage(theOscMessage);

@@ -1,6 +1,7 @@
 import java.io.*;
 import processing.core.*;
 import java.util.*;
+import processing.core.PApplet;
 ////////////////////////////////////////////////////////////////////////////
 // Led positions are ment to be kept in an Array of PVector. They can be conviniently read and stored using this class
 ////////////////////////////////////////////////////////////////////////////
@@ -50,9 +51,11 @@ class LedPositionFile {
 
 ////////////////////////////////////////////////////////////////////////////
 // maintains information about the outer dimensoions of an LED-Model 
+// can normalize the LedPosition Data
 ////////////////////////////////////////////////////////////////////////////
 class LedBoundingBox
  {
+  PApplet parent;
   // bounding box of the 3d-model
   float minX=Float.MAX_VALUE;
   float maxX=Float.MIN_VALUE;
@@ -78,7 +81,21 @@ class LedBoundingBox
     }
     return result;
   }
+  
+  public PVector[] normalizeLedPositions(PVector[] ledPositions) {
+      PVector[] result = new PVector[ledPositions.length];
+      for (int i = 0; i < result.length; i++){
+          result[i] = new PVector();
+      }
+      for (int i = 0; i < ledPositions.length; i++){
+          result[i].x = parent.map(ledPositions[i].x, minX, maxX, 0, 1);
+          result[i].y = parent.map(ledPositions[i].y, minY, maxY, 0, 1);
+          result[i].z = parent.map(ledPositions[i].z, minZ, maxZ, 0, 1);
+      }
+      return result;
+  }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////
 // some convenience for transformations on arrays of positions
