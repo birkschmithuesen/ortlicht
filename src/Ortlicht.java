@@ -45,7 +45,7 @@ public class Ortlicht extends PApplet {
     VideoPlayer videoPlayer;
     public static NNListener nnListener;
     TrainingsVideoRecorder trainingsVideoRecorder;
-    TrainingsVideoRecorderPosBased trainingsVideoRecorderPosBased;
+    //TrainingsVideoRecorderPosBased trainingsVideoRecorderPosBased;
 
     // Information about the sculpture dimensions
     public static float sculptureRadius = 0.77f; // <<<<----------------------this must be calculated automatically
@@ -95,7 +95,7 @@ public class Ortlicht extends PApplet {
         nnListener = new NNListener(ledColors.length);
         nnListener.start();
         trainingsVideoRecorder = new TrainingsVideoRecorder(dataPath(""));
-        trainingsVideoRecorderPosBased = new TrainingsVideoRecorderPosBased(dataPath(""));
+        //trainingsVideoRecorderPosBased = new TrainingsVideoRecorderPosBased(dataPath(""));
 
         //get Infos about sculpture
         boundingBox = LedBoundingBox.getForPositions(ledPositions);
@@ -254,9 +254,8 @@ public class Ortlicht extends PApplet {
             //videoRecorder.run(ledColors, theOscMessage.get(0).intValue());
         // a fft_train has to send in the end        to save trainings data    
         } else if (theOscMessage.checkAddrPattern("/fft_train") && theOscMessage.arguments().length > 0) {
-            //trainingsVideoRecorder.run(ledColors, theOscMessage);
-            trainingsVideoRecorderPosBased.run(boundingBox, ledPositionsNormalized, ledColors, theOscMessage);
-           
+            trainingsVideoRecorder.run(ledColors, theOscMessage);
+            //trainingsVideoRecorderPosBased.run(boundingBox, ledPositionsNormalized, ledColors, theOscMessage);
         } else {
             OscMessageDistributor.distributeMessage(theOscMessage);
         }

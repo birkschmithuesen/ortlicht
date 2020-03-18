@@ -28,7 +28,7 @@ public class TrainingsVideoRecorder {
     String filename_temp = "temp.vid";
     int counter=0;
     int nLeds=0;
-    int numBins =128;
+    int numBins =32;
 
     public TrainingsVideoRecorder(String filepath) {
         this.filepath = filepath;

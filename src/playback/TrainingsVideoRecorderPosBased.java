@@ -12,7 +12,11 @@ import oscP5.OscMessage;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-//this class records trainingsframes in a binary stream. At the end it will be converted and saved as delimited txt file
+//this class records trainingsframes in a stream. At the end it will be converted and saved as delimited txt file
+//the data is stored in the format:
+//[[FFT, XYZ[1], RGB[1], ..., XYZ[nLeds],RGB[nLeds]],
+//[[FFT, XYZ[1], RGB[1], ..., XYZ[nLeds],RGB[nLeds]],
+
 /**
  *
  * @author birk
@@ -54,6 +58,7 @@ public class TrainingsVideoRecorderPosBased {
         //save the frame, when new a new fft mesage arrived
         //System.out.println("receive fft"); 
         if (remoteRecorderStart.getValue() > 0) {
+            parent.println("start recording");
             nLeds=ledColors.length; //this should just be done one time!
             // create new Array form: Brightness XYZ FFT
             writeFrameToStream(boundingBox, ledPositions, ledColors, fft);
@@ -87,19 +92,23 @@ public class TrainingsVideoRecorderPosBased {
             File file = new File(filepath + "traingsdata.txt");
             PrintWriter writer = new PrintWriter(file);
             while (dis.available() > 0) {
-                //write the brightness of one one LED to the txt file. The Data in the stream is RGB, we just take the R 
-                writer.print(dis.readFloat()+"\t");
-                //skip the G and B value from the stream
-                writer.print(dis.readFloat()+"\t");
-                writer.print(dis.readFloat()+"\t");
-                // write the XYZ position data of one LED to the text file.
-                for (int i = 0; i < 3; i++){ //read three floats for xyz
-                    writer.print(dis.readFloat()+"\t");
-                }
                 //write the fft data to the txt file
                 for (int i = 0; i < numBins; i++) {
                     writer.print(dis.readFloat()+"\t");
                 }
+                for (int n = 0; n < nLeds; n++){
+                    // write the XYZ position data of one LED to the text file.
+                    for (int i = 0; i < 3; i++){ //read three floats for xyz
+                        writer.print(dis.readFloat()+"\t");
+                    }
+                    //write the brightness of one one LED to the txt file. The Data in the stream is RGB, we just take the R 
+                    writer.print(dis.readFloat()+"\t");
+                    //skip the G and B value from the stream
+                    dis.readFloat();
+                    dis.readFloat();
+                }
+                
+                
                 //leds are seperated in new lines
                 writer.println();
             }
@@ -130,22 +139,22 @@ public class TrainingsVideoRecorderPosBased {
         float[] theFrame = buildFrame(ledColors);
         float[] thePositions = buildPositions(ledPositions);
         try {
-            for (int i = 0; i < ledColors.length; i++) {
-                for (int j = 0; j < 3; j++){
-                    dos.writeFloat(theFrame[i+j]); //RGB values
+            for (int j = 0; j < numBins; j++) {
+                if (fftAnalyse.getTypetagAsBytes()[j] == 'f') {
+                    dos.writeFloat(fftAnalyse.get(j).floatValue());
                 }
+            }
+            for (int i = 0; i < ledColors.length; i++) {
                 for (int j = 0; j < 3; j++){
                     dos.writeFloat(thePositions[i+j]); //xyz LEDPositions 
                 }
-                for (int j = 0; j < numBins; j++) {
-                    if (fftAnalyse.getTypetagAsBytes()[j] == 'f') {
-                        dos.writeFloat(fftAnalyse.get(j).floatValue());
-                    }
+                for (int j = 0; j < 3; j++){
+                    dos.writeFloat(theFrame[i+j]); //RGB values
                 }
-                for (float f : theFrame) {
-                    dos.writeFloat(f);
-                };
             }
+
+
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

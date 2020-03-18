@@ -5,8 +5,6 @@ float	/NN/leds	space for descripiton	0.0	0.0	1.0
 int	/NN/play	space for descripiton	0	0	1
 int	/Training/record	space for descripiton	0	0	1
 float	/fft	space for descripiton	0.0	0.0	256.0
-int	/Training/record	space for descripiton	0	0	1
-float	/fft	space for descripiton	0.0	0.0	256.0
 float	/Direction/1/color/Hue	space for descripiton	0.0	0	1
 float	/Direction/1/color/Saturation	space for descripiton	0.0	0	1
 float	/Direction/1/color/Brightness	space for descripiton	0.5	0	1
