@@ -23,10 +23,10 @@ public class ManualSphere implements runnableLedEffect {
 		thickness = _thickness;
                 name = "Sphere"+id;
 		
-		remoteColor = new RemoteControlledColorParameter("/Spheres/"+name+"_"+id+"/color/", 0f, 0.f, 1f);
-		remoteBlendOut = new RemoteControlledFloatParameter("/Spheres/"+name+"_"+id + "/blendOut", 1.f, 0.f, 1.f);
-		remoteExpansion = new RemoteControlledFloatParameter("/Spheres/"+name+"_"+id + "/expansion", 0.0f, 0.f, 1.f);
-                remoteThickness = new RemoteControlledFloatParameter("/Spheres/"+name+"_"+id + "/thickness", 0.2f, 0.f, 1.f);
+		remoteColor = new RemoteControlledColorParameter("/colors/"+"/Spheres/"+id+"/", 0f, 0.f, 0.5f);
+		remoteBlendOut = new RemoteControlledFloatParameter("/Spheres/"+id + "/blendOut", 1.f, 0.f, 1.f);
+		remoteExpansion = new RemoteControlledFloatParameter("/Spheres/"+id + "/expansion", 0.0f, 0.f, 1.f);
+                remoteThickness = new RemoteControlledFloatParameter("/Spheres/"+id + "/thickness", 0.2f, 0.f, 1.f);
 	}
 
 	public LedColor[] drawMe() {

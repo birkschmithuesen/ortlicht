@@ -104,9 +104,13 @@ public class Ortlicht extends PApplet {
         ledPositionsNormalized = boundingBox.normalizeLedPositions(ledPositions);
         
         //add effects to EffectArray
-        //mixer.addEffect(new AttractingBalls());
-        //mixer.addEffect(new MovingWallEffect(ledPositions, "vertical", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
-        //mixer.addEffect(new MovingWallEffect(ledPositions, "horizontal", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
+        mixer.addEffect(new AttractingBalls());
+        mixer.addEffect(new MovingWallEffect(ledPositions, "vertical/1", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "vertical/2", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "vertical/3", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "horizontal/1", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "horizontal/2", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
+        mixer.addEffect(new MovingWallEffect(ledPositions, "horizontal/3", 0.08f, 0.09f, -1f,0f, 0.29f, 0.3f));
         //mixer.addEffect(new SingleStripe("1", numStripes, numLedsPerStripe, ledPositions.length));
         
         //mixer.addEffect(new ManualSphere("2", ledPositions, 0.1f));
@@ -114,9 +118,13 @@ public class Ortlicht extends PApplet {
         
         // THE FOLLOWING ARE NEEDED FOR SAI # 2 
    
-        mixer.addEffect(new DirectionLight("1", ledNormals));
-        mixer.addEffect(new ManualSphere("1", ledPositions, 0.3f));
-        mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.19f, 0.05f));
+        mixer.addEffect(new DirectionLight("/1", ledNormals));
+        mixer.addEffect(new DirectionLight("/2", ledNormals));
+        mixer.addEffect(new DirectionLight("/3", ledNormals));
+        mixer.addEffect(new ManualSphere("/1", ledPositions, 0.3f));
+        mixer.addEffect(new ManualSphere("/2", ledPositions, 0.3f));
+        mixer.addEffect(new ManualSphere("/3", ledPositions, 0.3f));
+        //mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.19f, 0.05f));
  
         
         // THE FOLLOWING ARE NEEDED FOR SAI # 1

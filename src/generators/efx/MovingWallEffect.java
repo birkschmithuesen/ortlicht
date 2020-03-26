@@ -4,6 +4,7 @@ import processing.core.PVector;
 public class MovingWallEffect implements runnableLedEffect {
 	LedColor[] ledColors;
 	PVector[] ledPositions;
+        PApplet parent;
         String name = "wall";
         String id;
 
@@ -24,16 +25,16 @@ public class MovingWallEffect implements runnableLedEffect {
 		ledColors=LedColor.createColorArray(ledPositions.length);
                 id=id_;
 
-		wallPosition=new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/position",pos_,0f,1f);
-		fullOnWidth=new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/width",width_,0f,1f);
-		decayWidth=new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/fadeOutWidth",fadeOut_,0f,1f);
-		decayGamma=new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/fadeOutGamma",2f,0.01f,10f);
+		wallPosition=new RemoteControlledFloatParameter("/walls/"+id+"/position",pos_,0f,1f);
+		fullOnWidth=new RemoteControlledFloatParameter("/walls/"+id+"/width",width_,0f,1f);
+		decayWidth=new RemoteControlledFloatParameter("/walls/"+id+"/fadeOutWidth",fadeOut_,0f,1f);
+		decayGamma=new RemoteControlledFloatParameter("/walls/"+id+"/fadeOutGamma",2f,0.01f,10f);
 
-		wallNormalX= new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/normal/X",wallNormalX_,-1f,1f);
-		wallNormalY= new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/normal/Y",wallNormalY_,-1f,1f);
-		wallNormalZ= new RemoteControlledFloatParameter("/walls/"+name+"_"+id+"/normal/Z",wallNormalZ_,-1f,1f);
+		wallNormalX= new RemoteControlledFloatParameter("/walls/"+id+"/normal/X",wallNormalX_,-1f,1f);
+		wallNormalY= new RemoteControlledFloatParameter("/walls/"+id+"/normal/Y",wallNormalY_,-1f,1f);
+		wallNormalZ= new RemoteControlledFloatParameter("/walls/"+id+"/normal/Z",wallNormalZ_,-1f,1f);
                 
-                wallColor = new RemoteControlledColorParameter("/walls/"+name+"_"+id+"/color/",0,0,1f);
+                wallColor = new RemoteControlledColorParameter("/colors/"+"/walls/"+ id.substring(0,id.length()-2)+"/",0,0,1f);
 	}
 	public LedColor[] drawMe() {
 		
