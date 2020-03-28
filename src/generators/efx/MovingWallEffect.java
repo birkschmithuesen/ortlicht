@@ -11,7 +11,7 @@ public class MovingWallEffect implements runnableLedEffect {
 	RemoteControlledFloatParameter 	wallPosition;
 	RemoteControlledFloatParameter fullOnWidth;
 	RemoteControlledFloatParameter decayWidth;
-	RemoteControlledFloatParameter decayGamma;
+	//RemoteControlledFloatParameter decayGamma;
 
 	RemoteControlledColorParameter wallColor;
 
@@ -28,13 +28,15 @@ public class MovingWallEffect implements runnableLedEffect {
 		wallPosition=new RemoteControlledFloatParameter("/walls/"+id+"/position",pos_,0f,1f);
 		fullOnWidth=new RemoteControlledFloatParameter("/walls/"+id+"/width",width_,0f,1f);
 		decayWidth=new RemoteControlledFloatParameter("/walls/"+id+"/fadeOutWidth",fadeOut_,0f,1f);
-		decayGamma=new RemoteControlledFloatParameter("/walls/"+id+"/fadeOutGamma",2f,0.01f,10f);
+		//decayGamma=new RemoteControlledFloatParameter("/walls/"+id+"/fadeOutGamma",2f,0.01f,10f);
 
 		wallNormalX= new RemoteControlledFloatParameter("/walls/"+id+"/normal/X",wallNormalX_,-1f,1f);
 		wallNormalY= new RemoteControlledFloatParameter("/walls/"+id+"/normal/Y",wallNormalY_,-1f,1f);
 		wallNormalZ= new RemoteControlledFloatParameter("/walls/"+id+"/normal/Z",wallNormalZ_,-1f,1f);
                 
-                wallColor = new RemoteControlledColorParameter("/colors/"+"/walls/"+ id.substring(0,id.length()-2)+"/",0,0,1f);
+                wallColor = new RemoteControlledColorParameter("/colors"+"/walls/"+ id+"/",0,0,1f);
+	        
+                //wallColor = new RemoteControlledColorParameter("/colors"+"/walls/"+ id.substring(0,id.length()-2)+"/",0,0,1f);
 	}
 	public LedColor[] drawMe() {
 		
@@ -46,7 +48,7 @@ public class MovingWallEffect implements runnableLedEffect {
 		float startFull=-(fullOnWidth.getValue())/2.0f;
 		float endFull=+(fullOnWidth.getValue())/2.0f;
 		float endFade=+(fullOnWidth.getValue()+decayWidth.getValue())/2.0f;
-		float gamma=decayGamma.getValue();
+		float gamma=2; //decayGamma.getValue();
 		LedColor wallColor_=wallColor.getColor();
 		for(int i=0;i<ledPositions.length;i++) {
 			float fadeMult=0;

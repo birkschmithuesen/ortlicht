@@ -7,7 +7,7 @@ import processing.core.PVector;
 
 class ExpandingSphere implements runnableLedEffect {
 	PApplet parent;
-	String name = "ExpandingSphere";
+	String name = "sphere";
 	String id;
 	PVector center = new PVector(0, 0, 0);
 	float outerRadius, innerRadius, thickness;

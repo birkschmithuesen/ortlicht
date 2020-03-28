@@ -26,12 +26,14 @@ public class AttractingBalls implements runnableLedEffect {
 	RemoteControlledFloatParameter centerGrav, leaderDelta, leaderForce, followMin, followMax, destForce;
 	RemoteControlledFloatParameter geneticForce;
 	RemoteControlledIntParameter generations, population, DNALength;
+        RemoteControlledColorParameter remoteColor;
+        LedColor theColor;
 	int numGeneration, numPopulation, lengthDNA;
 	float genForce;
-	LedColor leaderCol = new LedColor(0.01f, 1f, 0.01f);
-	LedColor followCol = new LedColor(1f, 0.01f, 0.01f);        
-	//LedColor leaderCol = new LedColor((50f / 255f), (170f / 255f), 1f);
-	//LedColor followCol = new LedColor(1f, (110f / 255f), (40f / 255f));
+	//LedColor leaderCol;
+	//LedColor followCol;        
+	LedColor leaderCol = new LedColor((50f / 255f), (170f / 255f), 1f);
+	LedColor followCol = new LedColor(1f, (110f / 255f), (40f / 255f));
 	LedColor DNACol = new LedColor(255f/255, (255f / 255f), (255f / 255f));
 	PApplet papplet;
 
@@ -39,22 +41,17 @@ public class AttractingBalls implements runnableLedEffect {
 		// initialize Bälle
 		b[0] = new Ball(0.2f, 0, 1, true, leaderCol,DNACol);
 		b[1] = new Ball(0.2f, 1, 0, false, followCol,DNACol);
-		centerGrav = new RemoteControlledFloatParameter("AttractingBalls/centerGrav", 0.f, 0.f, 1f);
-		destForce = new RemoteControlledFloatParameter("AttractingBalls/destForce", 0.0015f, 0.f, 0.01f);
-		leaderDelta = new RemoteControlledFloatParameter("AttractingBalls/leaderDelta", 5f, 0f, 200f);
-		leaderForce = new RemoteControlledFloatParameter("AttractingBalls/leaderForce", 0.0015f, 0.f, 0.01f);
-		followMin = new RemoteControlledFloatParameter("AttractingBalls/followMin", -0.0025f, -0.1f, 0.f);
-		followMax = new RemoteControlledFloatParameter("AttractingBalls/followMax", 0.0025f, 0.f, 0.1f);
-		geneticForce = new RemoteControlledFloatParameter("AttractingBalls/geneticForce", 0.35f, 0.f, 1f);
-		population = new RemoteControlledIntParameter("AttractingBalls/population", 200, 1, 2000);
-		generations = new RemoteControlledIntParameter("AttractingBalls/generations", 6, 1, 100);
-		DNALength = new RemoteControlledIntParameter("AttractingBalls/DNALength", 60, 1, 100);
-		
-/*
-		OscMessage posMessage = new OscMessage("ball/pos");
-		posMessage.add(1);
-*/	
-
+		centerGrav = new RemoteControlledFloatParameter("/balls/centerGrav", 0.f, 0.f, 1f);
+		destForce = new RemoteControlledFloatParameter("/balls/destForce", 0.0015f, 0.f, 0.01f);
+		leaderDelta = new RemoteControlledFloatParameter("/balls/leaderDelta", 5f, 0f, 200f);
+		leaderForce = new RemoteControlledFloatParameter("/balls/leaderForce", 0.0015f, 0.f, 0.01f);
+		followMin = new RemoteControlledFloatParameter("/balls/followMin", -0.0025f, -0.1f, 0.f);
+		followMax = new RemoteControlledFloatParameter("/balls/followMax", 0.0025f, 0.f, 0.1f);
+		geneticForce = new RemoteControlledFloatParameter("/balls/geneticForce", 0.35f, 0.f, 1f);
+		population = new RemoteControlledIntParameter("/balls/population", 200, 1, 2000);
+		generations = new RemoteControlledIntParameter("/balls/generations", 6, 1, 100);
+		DNALength = new RemoteControlledIntParameter("/balls/DNALength", 60, 1, 100);
+                remoteColor = new RemoteControlledColorParameter("/colors"+"/balls/",0,0,0f);
 	}
 
 	public LedColor[] drawMe() {
@@ -69,6 +66,8 @@ public class AttractingBalls implements runnableLedEffect {
 		numPopulation=population.getValue();
 		numGeneration=generations.getValue();
 		lengthDNA=DNALength.getValue();
+                theColor=remoteColor.getColor();
+                
 		b[0].step();
 		b[1].step();
 		
@@ -105,7 +104,8 @@ public class AttractingBalls implements runnableLedEffect {
 		for (int j = 0; j < Ortlicht.ledColors.length; j++) {
 			ballBufferLedColors[j].mixWithAlpha(ball2BufferLedColors[j], LedColor.LedAlphaMode.ADD, 1);
 		}
-
+                
+                LedColor.mult(ballBufferLedColors, theColor);
 
 		return ballBufferLedColors;
 	}

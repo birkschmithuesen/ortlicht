@@ -4,7 +4,7 @@ import processing.core.PVector;
 public class DirectionLight implements runnableLedEffect {
 
 	PApplet papplet;
-	String name = "Direction";
+	String name;
 	String id;
 	PVector[] ledNormals;
 	LedColor[] bufferLedColors;
@@ -22,16 +22,17 @@ public class DirectionLight implements runnableLedEffect {
 
 	DirectionLight(String _id, PVector[] _ledNormals) {
 		id = _id;
+                name = "direction" + id;
 		ledNormals = _ledNormals;
 		bufferLedColors = LedColor.createColorArray(ledNormals.length);
 		//theColor = _color;
-		remoteColor = new RemoteControlledColorParameter("/colors/"+"/Direction/" + id + "/", 0.0f, 0.0f, 0.5f);
-		remoteBlendOut = new RemoteControlledFloatParameter("/Direction/" + id + "/BlendOut", 1.f, 0.f, 1.f);
-		remoteDirectionX = new RemoteControlledFloatParameter("/Direction/" + id + "/XFrom", 0.8f, -0.5f, 0.5f);
-		remoteDirectionY = new RemoteControlledFloatParameter("/Direction/" + id + "/YFrom", 0.64f, 0f, 1f);
-		remoteDirectionZ = new RemoteControlledFloatParameter("/Direction/" + id + "/ZFrom", 0.2f, -0.5f, 0.5f);
-		remoteSize = new RemoteControlledFloatParameter("/Direction/" + id + "/Size", 0.2f, 0.f, 1.f);
-		remoteCyclePos = new RemoteControlledFloatParameter("/Direction/" + id + "/cyclePos", 0.0f, 0.f, 1.f);
+		remoteColor = new RemoteControlledColorParameter("/colors/"+"direction" + id + "/", 0.0f, 0.0f, 1f);
+		remoteBlendOut = new RemoteControlledFloatParameter("/direction" + id + "/BlendOut", 1.f, 0.f, 1.f);
+		remoteDirectionX = new RemoteControlledFloatParameter("/direction" + id + "/XFrom", 0.8f, -0.5f, 0.5f);
+		remoteDirectionY = new RemoteControlledFloatParameter("/direction" + id + "/YFrom", 0.64f, 0f, 1f);
+		remoteDirectionZ = new RemoteControlledFloatParameter("/direction" + id + "/ZFrom", 0.2f, -0.5f, 0.5f);
+		remoteSize = new RemoteControlledFloatParameter("/direction" + id + "/Size", 0.2f, 0.f, 1.f);
+		remoteCyclePos = new RemoteControlledFloatParameter("/direction" + id + "/cyclePos", 0.0f, 0.f, 1.f);
 	}
 
 	public LedColor[] drawMe() {

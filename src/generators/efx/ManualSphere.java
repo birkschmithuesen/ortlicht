@@ -22,11 +22,10 @@ public class ManualSphere implements runnableLedEffect {
 		bufferLedColors = LedColor.createColorArray(ledPositions.length);
 		thickness = _thickness;
                 name = "Sphere"+id;
-		
-		remoteColor = new RemoteControlledColorParameter("/colors/"+"/Spheres/"+id+"/", 0f, 0.f, 0.5f);
-		remoteBlendOut = new RemoteControlledFloatParameter("/Spheres/"+id + "/blendOut", 1.f, 0.f, 1.f);
-		remoteExpansion = new RemoteControlledFloatParameter("/Spheres/"+id + "/expansion", 0.0f, 0.f, 1.f);
-                remoteThickness = new RemoteControlledFloatParameter("/Spheres/"+id + "/thickness", 0.2f, 0.f, 1.f);
+		remoteColor = new RemoteControlledColorParameter("/colors/"+"spheres"+id+"/", 0f, 0.f, 1f);
+		//remoteBlendOut = new RemoteControlledFloatParameter("/spheres"+id + "/blendOut", 1.f, 0.f, 1.f);
+		remoteExpansion = new RemoteControlledFloatParameter("/spheres"+id + "/expansion", 0.0f, 0.f, 1.f);
+                remoteThickness = new RemoteControlledFloatParameter("/spheres"+id + "/thickness", 0.2f, 0.f, 1.f);
 	}
 
 	public LedColor[] drawMe() {
@@ -35,7 +34,7 @@ public class ManualSphere implements runnableLedEffect {
 		outerRadius = papplet.map(expansion, 0.f, 1.f, 0f, Ortlicht.sculptureRadius+0.2f);
 		innerRadius = outerRadius - thickness;
 		LedSphereDrawer.drawSphere(ledPositions, bufferLedColors, center, outerRadius, innerRadius,
-				remoteColor.getColor(), blendMode, remoteBlendOut.getValue());
+				remoteColor.getColor(), blendMode, 1); //isnt proper working: remoteBlendOut.getValue()
 		return bufferLedColors;
 	}
 
