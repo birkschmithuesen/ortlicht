@@ -21,6 +21,7 @@ public class VideoRecorder {
     RemoteControlledIntParameter remoteNNRecorderStart;
     RemoteControlledIntParameter remoteFrameRecorderCount;
     RemoteControlledIntParameter remoteNNFrameRecorderCount;
+    int frameCount = 0, lastFrameCount = 0;
 
     public VideoRecorder(String filename) {
         remoteRecorderStart = new RemoteControlledIntParameter("/Playback/Recorder/record", 0, 0, 1);
@@ -41,11 +42,17 @@ public class VideoRecorder {
         }
     }
 
-    public void run(LedColor[] ledColors, int frameCount) {
-
+    public void run(LedColor[] ledColors) {
         if (remoteRecorderStart.getValue() > 0) {
-            //just save a frame, when the frame counter changed
-            writeFrameToStream(ledColors, frameCount);
+            frameCount = remoteFrameRecorderCount.getValue();
+            //System.out.println("FrameCount" + frameCount);
+            if (lastFrameCount<frameCount){
+                lastFrameCount = frameCount;
+                //just save a frame, when the frame counter changed
+                writeFrameToStream(ledColors, frameCount);
+                //System.out.println("Writing frame Nr" + frameCount);
+                //System.out.println("Brightness Value: " + ledColors[0].x);
+            }
 
         } //when the record from Ableton is finished
         else if (remoteRecorderStart.getChangedSinceReset()) {

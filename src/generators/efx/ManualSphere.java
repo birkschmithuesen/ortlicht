@@ -30,7 +30,7 @@ public class ManualSphere implements runnableLedEffect {
 
 	public LedColor[] drawMe() {
 		expansion=remoteExpansion.getValue();
-                thickness=remoteThickness.getValue();
+                thickness=papplet.map(remoteThickness.getValue(), 0.f, 1.f, 0.f, 0.6f);
 		outerRadius = papplet.map(expansion, 0.f, 1.f, 0f, Ortlicht.sculptureRadius+0.2f);
 		innerRadius = outerRadius - thickness;
 		LedSphereDrawer.drawSphere(ledPositions, bufferLedColors, center, outerRadius, innerRadius,

@@ -70,6 +70,7 @@ public class Ortlicht extends PApplet {
     boolean playVideo = false;
     boolean writeStream = true;
     int oscFramePart = 0;
+    int frameCount = 0;
     
 
     public void settings() {
@@ -90,8 +91,8 @@ public class Ortlicht extends PApplet {
         ledColors = LedColor.createColorArray(ledPositions.length);        // build a color buffer with the length of the position file
         stripeInfos = stripeConfiguration.builtStripeInfo();                      // create stripe date for each LED (used only for specific visualizations
         mixer = new Mixer();
-        //videoRecorder = new VideoRecorder("videos/video_rec.vid");
-        //videoPlayer = new VideoPlayer("videos/scene_", ledColors.length);
+        videoRecorder = new VideoRecorder("videos/video_rec.vid");
+        videoPlayer = new VideoPlayer("videos/scene_", ledColors.length);
         nnListener = new NNListener(ledColors.length);
         nnListener.start();
         trainingsVideoRecorder = new TrainingsVideoRecorder(dataPath(""));
@@ -176,31 +177,31 @@ public class Ortlicht extends PApplet {
         //load the next scene file, if the osc command came
        // System.out.println(frameRate);
         //videoPlayer.loadScene();
-        /*
         if (videoPlayer.isPlaying()) {
-            // if (videoPlayer.getFrameAvailable()) 
-                            ledColors = videoPlayer.getFrame();
+            videoPlayer.checkFrame();
+            ledColors = videoPlayer.getFrame();
+            background(0);
+            drawScreen();
+            //artNetSender.sendToLeds(ledColors); 
+        } 
+        else {
+            if(videoPlayer.getReloadFile()) videoPlayer.reloadVideoFile();
+            if(nnListener.getReceiving()) {
+                System.out.println("get NN");
+                ledColors = nnListener.getFrame();
+                //artNetSender.sendToLeds(ledColors);
                 background(0);
                 drawScreen();
-             
-            //if the NeuralNetwork sends pictures, show the Neural Network Output
-        } 
-        artNetSender.sendToLeds(ledColors); 
-        */
-        if (nnListener.getReceiving()) {
-            System.out.println("get NN");
-            ledColors = nnListener.getFrame();
-            artNetSender.sendToLeds(ledColors);
-            background(0);
-            drawScreen();
-            //else show the mixers efx-generators output
-        } else {
-            //System.out.println(nnListener.getFrameAvailable());
-            ledColors = mixer.mix();
-            background(0);
-            drawScreen();
-            artNetSender.sendToLeds(ledColors);
-        }
+                //else show the mixers efx-generators output
+            } else {
+                //System.out.println(nnListener.getFrameAvailable());
+                ledColors = mixer.mix();
+                background(0);
+                drawScreen();
+                //artNetSender.sendToLeds(ledColors);
+            }
+            }
+        videoRecorder.run(ledColors);
         
 
     }
@@ -257,16 +258,11 @@ public class Ortlicht extends PApplet {
         }
          */
 
-        if (theOscMessage.checkAddrPattern("/frameCount") && theOscMessage.arguments().length > 0) {
-            if (videoPlayer.isPlaying()) {
-                videoPlayer.checkFrame(theOscMessage.get(0).intValue());
-            }
-            //videoRecorder.run(ledColors, theOscMessage.get(0).intValue());
-        // a fft_train has to send in the end        to save trainings data    
-        } else if (theOscMessage.checkAddrPattern("/fft_train") && theOscMessage.arguments().length > 0) {
+  
+        if (theOscMessage.checkAddrPattern("/fft_train") && theOscMessage.arguments().length > 0) {
             trainingsVideoRecorder.run(ledColors, theOscMessage);
             //trainingsVideoRecorderPosBased.run(boundingBox, ledPositionsNormalized, ledColors, theOscMessage);
-        } else {
+        } else if (theOscMessage.arguments().length > 0) {
             OscMessageDistributor.distributeMessage(theOscMessage);
         }
 

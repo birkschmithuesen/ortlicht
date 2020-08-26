@@ -21,12 +21,14 @@ public class VideoPlayer {
     RemoteControlledIntParameter remotePlayerPlay;
     RemoteControlledIntParameter remoteFramePlayerCount;
     RemoteControlledIntParameter remoteNextScene;
+    RemoteControlledIntParameter remoteReloadFile;
     boolean checkFrameAgain = false;
     int streamFrame = 0;
     int sceneID = 0;
     int nLeds = 0;
     LedColor[] ledColors;
     boolean newFrameAvailable=false;
+    int frameCount = 0, lastFrameCount = 0;
 
     public VideoPlayer(String filename, int nLeds) {
         this.filename = filename;
@@ -35,6 +37,7 @@ public class VideoPlayer {
         remotePlayerPlay = new RemoteControlledIntParameter("/Playback/Player/play", 0, 0, 1);
         remoteFramePlayerCount = new RemoteControlledIntParameter("/Playback/Player/frameCount", 0, 0, 18000);
         remoteNextScene = new RemoteControlledIntParameter("/Playback/Player/nextScene", 0, 0, 1);
+        remoteReloadFile = new RemoteControlledIntParameter("/Playback/Player/reloadScene", 0, 0, 1);
         try {
             fis = new FileInputStream(filename + sceneID + ".vid");
             //set the buffer size to 500MB
@@ -72,6 +75,7 @@ public class VideoPlayer {
                 dis = new DataInputStream(bis);
                 System.out.println("Load Video: " + filename + sceneID + ".vid");
                 checkFrameAgain = false;
+                lastFrameCount = 0;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,47 +148,60 @@ public class VideoPlayer {
         else return false;
     }
     
-    public void checkFrame(int frameCount) {
-        try {
+    public boolean getReloadFile(){
+        if(remoteReloadFile.getChangedSinceReset()){
+            remoteReloadFile.resetChanged();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public void checkFrame() {
+        frameCount = remoteFramePlayerCount.getValue();
+        if (frameCount>lastFrameCount){
+            lastFrameCount = frameCount;
+            try {
 
-            if (dis.available() > 0) {
+                if (dis.available() > 0) {
 
-                boolean checkTheStream = true;
-                while (checkTheStream) {
-                    //if the last frame was in sync, the next frame from the stream should be picked
-                    if (!checkFrameAgain) {
-                        streamFrame = dis.readInt();
-                         // System.out.println("Next Frame in Stream: " + streamFrame);
-                    }
-                    //if the frame number from stream is equal to frame count, play the new frame
-                    if (streamFrame == frameCount) {
-                        checkFrameAgain = false;
-                         // System.out.println("Load the Frame");
-                        ledColors = readFrame();
-                        checkTheStream=false;
-                        newFrameAvailable=true;
-                    } 
-                    //if the frame count is lower then the next available frame
-                    else if (frameCount < streamFrame) {
-                        checkFrameAgain = true;
-                        System.out.println("frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
-                        checkTheStream=false;
-                    } //if frame count is higher the next available frame, delete the frame from the stream and check for the next one
-                    // ToDo: here should be a loop back to the beginning of the method to read the next frame from the stream. 
-                    else{
-                        System.out.println("frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
-                        for (int i = 0; i < nLeds; i++) {
-                            for (int j = 0; j < 3; j++) {
-                                dis.readByte();
-                            }
+                    boolean checkTheStream = true;
+                    while (checkTheStream) {
+                        //if the last frame was in sync, the next frame from the stream should be picked
+                        if (!checkFrameAgain) {
+                            streamFrame = dis.readInt();
                         }
-                        checkFrameAgain = false;
-                        checkTheStream=true;
+                        //if the frame number from stream is equal to frame count, play the new frame
+                        if (streamFrame == frameCount) {
+                            checkFrameAgain = false;
+                            ledColors = readFrame();
+                            checkTheStream=false;
+                            newFrameAvailable=true;
+                        } 
+                        //if the frame count is lower then the next available frame
+                        else if (frameCount < streamFrame) {
+                            checkFrameAgain = true;
+                            System.out.println("frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
+                            checkTheStream=false;
+                        } //if frame count is higher the next available frame, delete the frame from the stream and check for the next one
+                        // ToDo: here should be a loop back to the beginning of the method to read the next frame from the stream. 
+
+                        else{
+                            System.out.println("frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
+                            for (int i = 0; i < nLeds; i++) {
+                                for (int j = 0; j < 3; j++) {
+                                    dis.readByte();
+                                }
+                            }
+                            checkFrameAgain = false;
+                            checkTheStream=true;
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -243,18 +260,16 @@ public class VideoPlayer {
 
     }
 
-    private void reloadVideoFile() {
-        remotePlayerPlay = new RemoteControlledIntParameter("/Playback/Player/play", 0, 0, 1);
-        remoteFramePlayerCount = new RemoteControlledIntParameter("/Playback/Player/frameCount", 0, 0, 18000);
+    public void reloadVideoFile() {
         try {
-            fis = new FileInputStream(filename);
+            fis = new FileInputStream(filename + sceneID + ".vid");
             //set the buffer size to 500MB
             int bufferSize = 16 * 1024;
             bis = new BufferedInputStream(fis, bufferSize);
             dis = new DataInputStream(bis);
-            streamSize = dis.available();
-            System.out.println("length of stream:");
-            System.out.println(streamSize);
+            checkFrameAgain = false;
+            lastFrameCount = 0;
+            System.out.println("Load Video: " + filename + sceneID + ".vid");
         } catch (Exception e) {
             e.printStackTrace();
         }
