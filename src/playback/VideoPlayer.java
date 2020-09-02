@@ -163,9 +163,7 @@ public class VideoPlayer {
         if (frameCount>lastFrameCount){
             lastFrameCount = frameCount;
             try {
-
                 if (dis.available() > 0) {
-
                     boolean checkTheStream = true;
                     while (checkTheStream) {
                         //if the last frame was in sync, the next frame from the stream should be picked
@@ -182,13 +180,12 @@ public class VideoPlayer {
                         //if the frame count is lower then the next available frame
                         else if (frameCount < streamFrame) {
                             checkFrameAgain = true;
-                            System.out.println("frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
+                            System.out.println("no frame available frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
                             checkTheStream=false;
                         } //if frame count is higher the next available frame, delete the frame from the stream and check for the next one
                         // ToDo: here should be a loop back to the beginning of the method to read the next frame from the stream. 
-
                         else{
-                            System.out.println("frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
+                            System.out.println("!FRAMEDROP! frameCount: " + frameCount + " ... NextStreamFrame: " + streamFrame);
                             for (int i = 0; i < nLeds; i++) {
                                 for (int j = 0; j < 3; j++) {
                                     dis.readByte();

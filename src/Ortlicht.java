@@ -79,7 +79,7 @@ public class Ortlicht extends PApplet {
     }
 
     public void setup() {
-        frameRate(44);
+        frameRate(80);
         delay(500);
         OscProperties op = new OscProperties();
         //  op.setDatagramSize(9220);
@@ -105,7 +105,7 @@ public class Ortlicht extends PApplet {
         ledPositionsNormalized = boundingBox.normalizeLedPositions(ledPositions);
         
         //add effects to EffectArray
-        mixer.addEffect(new AttractingBalls());
+        //mixer.addEffect(new AttractingBalls());
         mixer.addEffect(new MovingWallEffect(ledPositions, "vertical/1", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
         mixer.addEffect(new MovingWallEffect(ledPositions, "vertical/2", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
         mixer.addEffect(new MovingWallEffect(ledPositions, "vertical/3", -0.05f, 1f, 0.09f, 1f, 0.29f, 0.3f));
@@ -182,14 +182,14 @@ public class Ortlicht extends PApplet {
             ledColors = videoPlayer.getFrame();
             background(0);
             drawScreen();
-            //artNetSender.sendToLeds(ledColors); 
+            artNetSender.sendToLeds(ledColors); 
         } 
         else {
             if(videoPlayer.getReloadFile()) videoPlayer.reloadVideoFile();
             if(nnListener.getReceiving()) {
                 System.out.println("get NN");
                 ledColors = nnListener.getFrame();
-                //artNetSender.sendToLeds(ledColors);
+                artNetSender.sendToLeds(ledColors);
                 background(0);
                 drawScreen();
                 //else show the mixers efx-generators output
@@ -198,7 +198,7 @@ public class Ortlicht extends PApplet {
                 ledColors = mixer.mix();
                 background(0);
                 drawScreen();
-                //artNetSender.sendToLeds(ledColors);
+                artNetSender.sendToLeds(ledColors);
             }
             }
         videoRecorder.run(ledColors);
@@ -260,7 +260,7 @@ public class Ortlicht extends PApplet {
 
   
         if (theOscMessage.checkAddrPattern("/fft_train") && theOscMessage.arguments().length > 0) {
-            trainingsVideoRecorder.run(ledColors, theOscMessage);
+            //trainingsVideoRecorder.run(ledColors, theOscMessage);
             //trainingsVideoRecorderPosBased.run(boundingBox, ledPositionsNormalized, ledColors, theOscMessage);
         } else if (theOscMessage.arguments().length > 0) {
             OscMessageDistributor.distributeMessage(theOscMessage);
