@@ -54,6 +54,8 @@ public class VideoPlayer {
     //check if the Playing is playing
     public boolean isPlaying() {
         if (remotePlayerPlay.getValue() > 0) {
+            if (remotePlayerPlay.getChangedSinceReset()) {
+            }
             return true;
         } else {
             return false;
@@ -160,11 +162,14 @@ public class VideoPlayer {
     
     public void checkFrame() {
         frameCount = remoteFramePlayerCount.getValue();
+        System.out.println(frameCount);
+        
         if (frameCount>lastFrameCount){
             lastFrameCount = frameCount;
             try {
                 if (dis.available() > 0) {
                     boolean checkTheStream = true;
+                    newFrameAvailable = false;
                     while (checkTheStream) {
                         //if the last frame was in sync, the next frame from the stream should be picked
                         if (!checkFrameAgain) {
@@ -176,6 +181,8 @@ public class VideoPlayer {
                             ledColors = readFrame();
                             checkTheStream=false;
                             newFrameAvailable=true;
+                            System.out.println("Play Frame Nr.: " + frameCount);
+                            newFrameAvailable = true;
                         } 
                         //if the frame count is lower then the next available frame
                         else if (frameCount < streamFrame) {

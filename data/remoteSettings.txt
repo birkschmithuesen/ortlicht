@@ -3,9 +3,9 @@ float	/mixer/master/trace/green	space for descripiton	0.27	0.0	1.0
 float	/mixer/master/trace/blue	space for descripiton	0.27	0.0	1.0
 float	/mixer/master/brightness	space for descripiton	0.25	0.0	1.0
 int	/Playback/Recorder/record	space for descripiton	0	0	1
-int	/Playback/Recorder/frameCount	space for descripiton	2611	0	18000
+int	/Playback/Recorder/frameCount	space for descripiton	7256	0	18000
 int	/Playback/Player/play	space for descripiton	0	0	1
-int	/Playback/Player/frameCount	space for descripiton	2611	0	18000
+int	/Playback/Player/frameCount	space for descripiton	7256	0	18000
 int	/Playback/Player/nextScene	space for descripiton	0	0	1
 int	/Playback/Player/reloadScene	space for descripiton	0	0	1
 float	/NN/leds	space for descripiton	0.0	0.0	1.0

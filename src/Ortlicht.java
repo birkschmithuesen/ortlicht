@@ -79,7 +79,7 @@ public class Ortlicht extends PApplet {
     }
 
     public void setup() {
-        frameRate(80);
+        frameRate(60);
         delay(500);
         OscProperties op = new OscProperties();
         //  op.setDatagramSize(9220);
@@ -179,10 +179,12 @@ public class Ortlicht extends PApplet {
         //videoPlayer.loadScene();
         if (videoPlayer.isPlaying()) {
             videoPlayer.checkFrame();
-            ledColors = videoPlayer.getFrame();
-            background(0);
-            drawScreen();
-            artNetSender.sendToLeds(ledColors); 
+            if(videoPlayer.getFrameAvailable()){
+                ledColors = videoPlayer.getFrame();
+                background(0);
+                drawScreen();
+                artNetSender.sendToLeds(ledColors); 
+            }
         } 
         else {
             if(videoPlayer.getReloadFile()) videoPlayer.reloadVideoFile();
