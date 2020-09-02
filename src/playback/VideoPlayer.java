@@ -6,33 +6,37 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.DataInputStream;
+import processing.core.PVector;
 
 /**
  *
  * @author birk
  */
-public class VideoPlayer {
+public class VideoPlayer implements runnableLedEffect {
 
     InputStream fis = null;
     BufferedInputStream bis = null;
     DataInputStream dis = null;
+    PVector[] ledPositions;
     int streamSize = 0;
     String filename;
     RemoteControlledIntParameter remotePlayerPlay;
     RemoteControlledIntParameter remoteFramePlayerCount;
     RemoteControlledIntParameter remoteNextScene;
     RemoteControlledIntParameter remoteReloadFile;
+    String name = "player";
     boolean checkFrameAgain = false;
     int streamFrame = 0;
     int sceneID = 0;
-    int nLeds = 0;
+    int nLeds;
     LedColor[] ledColors;
     boolean newFrameAvailable=false;
     int frameCount = 0, lastFrameCount = 0;
 
-    public VideoPlayer(String filename, int nLeds) {
+    VideoPlayer(String filename, PVector[] ledPositions_) {
+        ledPositions=ledPositions_;
         this.filename = filename;
-        this.nLeds = nLeds;
+        this.nLeds = ledPositions.length;
         ledColors = LedColor.createColorArray(nLeds);
         remotePlayerPlay = new RemoteControlledIntParameter("/Playback/Player/play", 0, 0, 1);
         remoteFramePlayerCount = new RemoteControlledIntParameter("/Playback/Player/frameCount", 0, 0, 18000);
@@ -51,6 +55,18 @@ public class VideoPlayer {
         }
     }
 
+    public LedColor[] drawMe() {
+        if(isPlaying()){
+            checkFrame();
+            if(getFrameAvailable()){
+                ledColors = getFrame();
+            }
+        }
+        else {
+            if(getReloadFile()) reloadVideoFile();
+        }
+        return ledColors;
+    }
     //check if the Playing is playing
     public boolean isPlaying() {
         if (remotePlayerPlay.getValue() > 0) {
@@ -278,5 +294,9 @@ public class VideoPlayer {
             e.printStackTrace();
         }
 
+    }
+    
+    public String getName() {
+            return name;
     }
 }

@@ -22,10 +22,10 @@ class Mixer {
         outputBufferLedColors = LedColor.createColorArray(Ortlicht.ledPositions.length); //creates a new ledColorBuffer as output of the mixer
         effectList = new ArrayList<runnableLedEffect>();
         opacityList = new ArrayList<RemoteControlledFloatParameter>();
-        traceControlRed = new RemoteControlledFloatParameter("/mixer/master/trace/red", 0.27f, 0f, 1f);
-        traceControlGreen = new RemoteControlledFloatParameter("/mixer/master/trace/green", 0.27f, 0f, 1f);
-        traceControlBlue = new RemoteControlledFloatParameter("/mixer/master/trace/blue", 0.27f, 0f, 1f);
-        masterControlOpacity = new RemoteControlledFloatParameter("/mixer/master/brightness", 0.25f, 0f, 1f);
+        traceControlRed = new RemoteControlledFloatParameter("/mixer/master/trace/red", 0f, 0f, 1f);
+        traceControlGreen = new RemoteControlledFloatParameter("/mixer/master/trace/green", 0f, 0f, 1f);
+        traceControlBlue = new RemoteControlledFloatParameter("/mixer/master/trace/blue", 0f, 0f, 1f);
+        masterControlOpacity = new RemoteControlledFloatParameter("/mixer/master/brightness", 1f, 0f, 1f);
         
     }
 
