@@ -1,4 +1,8 @@
-build/classes/MovingWallEffect.class
-build/classes/VideoPlayer.class
-build/classes/VideoRecorder.class
-nbproject/
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
