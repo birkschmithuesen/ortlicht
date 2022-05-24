@@ -116,7 +116,10 @@ public class Ortlicht extends PApplet {
    
         mixer.addEffect(new DirectionLight("1", ledNormals));
         mixer.addEffect(new ManualSphere("1", ledPositions, 0.3f));
-        mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.19f, 0.05f));
+        //Wall for object 1
+        //mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", -0.05f, 1f, 0.09f,0f, 0.19f, 0.05f));
+        //Wall for object 2
+        mixer.addEffect(new MovingWallEffect(ledPositions, "bottom", 0.09375f, 0.828125f, -0.0703125f,0f, 0.19f, 0.05f));
  
         
         // THE FOLLOWING ARE NEEDED FOR SAI # 1
