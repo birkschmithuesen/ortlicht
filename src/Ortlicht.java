@@ -68,6 +68,8 @@ public class Ortlicht extends PApplet {
     boolean playRecorded = true;
     boolean nn_sw = false; //if the network works black and white
     boolean playVideo = false;
+    boolean showDisplay = true; //toggle screen preview of the LED sphere with 'd'
+    long lastNnLogMillis = 0; //throttle the "get NN" heartbeat log to once/second
     boolean writeStream = true;
     int oscFramePart = 0;
     int frameCount = 0;
@@ -185,21 +187,17 @@ public class Ortlicht extends PApplet {
         
         
 
-            if(nnListener.getReceiving()) {
+            if (nnListener.getReceiving() && millis() - lastNnLogMillis > 1000) {
                 System.out.println("get NN");
-                ledColors = nnListener.getFrame();
-                artNetSender.sendToLeds(ledColors);
-                background(0);
-                //drawScreen();
-                //else show the mixers efx-generators output
-            } else {
-                //System.out.println(nnListener.getFrameAvailable());
-                ledColors = mixer.mix();
-                background(0);
-                //drawScreen();
-                artNetSender.sendToLeds(ledColors);
-            
+                lastNnLogMillis = millis();
             }
+            // NN-Ausgabe laeuft immer ueber den Mixer (NNefx-Effekt, /mixer/opacity/neuralNetwork),
+            // zusammen mit den anderen Effekten (Waende, ManualSphere, VideoPlayer, ...) geblendet,
+            // statt sie exklusiv zu ersetzen wenn /NN/play=1 ist.
+            ledColors = mixer.mix();
+            background(0);
+            if (showDisplay) drawScreen();
+            artNetSender.sendToLeds(ledColors);
         videoRecorder.run(ledColors);
         
 
@@ -300,6 +298,10 @@ public class Ortlicht extends PApplet {
                     writeStream = false;
                     //outStream.saveFileToDisk();
                     System.out.println("Saved Video");
+                }
+                if (keyCode == 68) {
+                    showDisplay = !showDisplay;
+                    System.out.println("Display " + (showDisplay ? "an" : "aus"));
                 }
 
                 break;
